@@ -25,7 +25,7 @@ document.body.appendChild(appContainer);
 //cargar interfaces
 async function loadInterface(name) {
   try {
-    const res = await fetch(`./games/${name}.html`);
+    const res = await fetch(`./games/menu/${name}.html`);
     const html = await res.text();
     appContainer.innerHTML = html;
   } catch (err) {
