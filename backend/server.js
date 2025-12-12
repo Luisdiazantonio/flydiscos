@@ -3,9 +3,18 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import { Server } from "socket.io";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Necesario para rutas absolutas en ESModules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
+
+
+app.use(express.static(__dirname));  
 
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
@@ -50,6 +59,21 @@ io.on("connection", (socket) => {
       io.emit("start_game"); 
       console.log("Juego iniciado");
     }
+  });
+  // jugador salir
+  socket.on("leave_room", () => {
+    console.log("Jugador salió voluntariamente:", socket.id);
+
+    // Si estaba listo, restamos del contador
+    if (game.players[socket.id]?.ready) {
+      game.readyCount = Math.max(0, game.readyCount - 1);
+    }
+
+    // Eliminamos al jugador
+    delete game.players[socket.id];
+
+    // Actualizamos el lobby para todos
+    io.emit("lobby_update", game.players);
   });
 
   // Desconectar jugador

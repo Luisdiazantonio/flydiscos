@@ -26,43 +26,56 @@ document.body.appendChild(appContainer);
 //cargar archivos dinamicos
 async function loadInterface(name) {
   try {
-    // limpiar datos
+    // ocultar contenedor
+    appContainer.style.opacity = "0";
+    appContainer.innerHTML = `<div class="loading-screen">Cargando ${name}...</div>`;
+
+    // limpiar interfaces
     document.querySelectorAll('[data-interface]').forEach(el => el.remove());
 
-    // cargar html
-    const htmlRes = await fetch(`./games/${name}/${name}.html`);
-    if (!htmlRes.ok) throw new Error(`HTML no encontrado: ${name}`);
+    //cargar css, html y js
+    const [htmlRes, cssRes, jsRes] = await Promise.all([
+      fetch(`./games/${name}/${name}.html`).catch(() => null),
+      fetch(`./games/${name}/${name}.css`).catch(() => null),
+      fetch(`./games/${name}/${name}.js`).catch(() => null)
+    ]);
+
+    // verificar html
+    if (!htmlRes || !htmlRes.ok) {
+      throw new Error(`HTML no encontrado: ${name}`);
+    }
     const html = await htmlRes.text();
+
+    //obtener css y js
+    const cssText = cssRes && cssRes.ok ? await cssRes.text() : "";
+    const jsText  = jsRes && jsRes.ok  ? await jsRes.text()  : "";
+
+    // mostrar todos
     appContainer.innerHTML = html;
 
-    // cargar css
-    try {
-      const cssRes = await fetch(`./games/${name}/${name}.css`);
-      if (cssRes.ok) {
-        const style = document.createElement('style');
-        style.dataset.interface = name;         
-        style.textContent = await cssRes.text();
-        document.head.appendChild(style);
-      }
-    } catch (_) {}
+    if (cssText) {
+      const style = document.createElement('style');
+      style.dataset.interface = name;
+      style.textContent = cssText;
+      document.head.appendChild(style);
+    }
 
-    // cargar javaScrip
-    try {
-      const jsRes = await fetch(`./games/${name}/${name}.js`);
-      if (jsRes.ok) {
-        const scriptText = await jsRes.text();
+    if (jsText) {
+      const script = document.createElement('script');
+      script.dataset.interface = name;
+      script.textContent = jsText;
+      document.body.appendChild(script);
+    }
 
-        const script = document.createElement('script');
-        script.dataset.interface = name;          
-        script.textContent = scriptText;
-        document.body.appendChild(script);
-
-      }
-    } catch (_) {}
+    // mostrar de forma suave y sencilla
+    requestAnimationFrame(() => {
+      appContainer.style.opacity = "1";
+    });
 
   } catch (err) {
     console.error("Error cargando interfaz:", name, err);
     appContainer.innerHTML = `<h2 style="color:red;text-align:center;">Error cargando ${name}</h2>`;
+    appContainer.style.opacity = "1";
   }
 }
 
