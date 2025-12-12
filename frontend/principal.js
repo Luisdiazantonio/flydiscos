@@ -57,7 +57,7 @@ async function loadInterface(name) {
       const style = document.createElement('style');
       style.dataset.interface = name;
       style.textContent = cssText;
-      document.head.appendChild(style);
+      document.head.appendChild(style); 
     }
 
     if (jsText) {
