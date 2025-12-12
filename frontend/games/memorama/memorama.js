@@ -6,7 +6,15 @@ let cartas = [
     "Maria Victoria", "Maria Victoria",
     "Antonio", "Antonio",
     "Carlos Eduardo", "Carlos Eduardo",
-    "Carmen Elena", "Carmen Elena"
+    "Carmen Elena", "Carmen Elena",
+    "Juan Pablo", "Juan Pablo",           
+    "Laura", "Laura",
+    "Sofía", "Sofía",
+    "Mateo", "Mateo",
+    "Valentina", "Valentina",
+    "Diego", "Diego",
+    "Camila", "Camila",
+    "Gabriel", "Gabriel"
 ];
 
 let jugada1 = null;
@@ -36,7 +44,7 @@ function barajarCartas() {
 }
 
 function resetearTablero() {
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 32; i++) {
         const celda = document.getElementById(i);
         celda.dataset.valor = cartas[i];
         celda.innerHTML = "?";
@@ -83,7 +91,7 @@ function girarCarta(id) {
 function comprobarVictoria() {
     setTimeout(() => {
         const acertadas = document.querySelectorAll(".acertada").length;
-        if (acertadas === 16) {
+        if (acertadas === 32) {
             document.getElementById("mensaje").innerHTML = 
                 `¡FELICIDADES ${nombreJugador.toUpperCase()}!<br>¡GANASTE EL MEMORAMA!`;
         }
