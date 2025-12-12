@@ -39,51 +39,9 @@ h1:active {
     transform: scale(0.98);
 }
 
+/* Ocultamos los botones de niveles */
 .niveles {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-}
-
-.nivel-btn {
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #f0f0f0;
-    background: linear-gradient(145deg, #21262d, #161b22);
-    border: 2px solid #30363d;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    user-select: none;
-    min-width: 120px;
-}
-
-.nivel-btn small {
-    font-size: 12px;
-    opacity: 0.8;
-    display: block;
-    font-weight: normal;
-}
-
-.nivel-btn:hover {
-    background: linear-gradient(145deg, #30363d, #21262d);
-    border-color: #58a6ff;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(88, 166, 255, 0.3);
-}
-
-.nivel-btn.activo {
-    background: linear-gradient(145deg, #1f6feb, #0d5fd8);
-    border-color: #388bfd;
-    box-shadow: 0 8px 25px rgba(31, 111, 235, 0.5);
-    transform: translateY(-1px);
-}
-
-.nivel-btn:active {
-    transform: translateY(0);
+    display: none;
 }
 
 .info {
@@ -96,6 +54,8 @@ h1:active {
     margin-bottom: 25px;
     border: 1px solid #30363d;
     box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .contador {
@@ -103,6 +63,12 @@ h1:active {
     font-weight: bold;
     min-width: 100px;
     text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+#dificultad-display {
+    font-size: clamp(16px, 2.5vw, 20px);
+    font-weight: bold;
+    color: #58a6ff;
 }
 
 #emoji-cara {
@@ -123,7 +89,6 @@ h1:active {
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-/* TABLERO CORREGIDO */
 .tablero {
     --cell-size: 40px;
     --cols: 8;
@@ -212,7 +177,5 @@ h1:active {
     .container { padding: 20px 15px; }
     .info { flex-direction: column; gap: 10px; }
     .contador { min-width: auto; }
-    .niveles { gap: 10px; }
-    .nivel-btn { min-width: 100px; padding: 10px 16px; font-size: 15px; }
     .tablero { padding: 10px; gap: 2px; margin: 20px auto; }
 }
