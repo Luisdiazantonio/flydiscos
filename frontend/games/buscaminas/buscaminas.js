@@ -4,7 +4,7 @@ const NIVELES = {
     experto: { rows: 16, cols: 30, minas: 99, nombre: "Difícil", tiempo: 180 }
 };
 
-let NIVEL_ACTUAL = 'facil';
+let NIVEL_ACTUAL;
 let currentRows, currentCols, currentMinas, tiempoLimite;
 let tablero = document.getElementById('tablero');
 let mensaje = document.getElementById('mensaje');
@@ -21,15 +21,13 @@ let tiempoInicio = null;
 let tiempoRestante = null;
 let temporizador = null;
 
-// Configurar botones de nivel
-document.querySelectorAll('.nivel-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelector('.nivel-btn.activo').classList.remove('activo');
-        this.classList.add('activo');
-        NIVEL_ACTUAL = this.dataset.nivel;
-        reiniciarJuego();
-    });
-});
+// Función para elegir dificultad aleatoria
+function elegirDificultadAleatoria() {
+    const niveles = Object.keys(NIVELES);
+    const aleatorio = niveles[Math.floor(Math.random() * niveles.length)];
+    NIVEL_ACTUAL = aleatorio;
+    return NIVELES[NIVEL_ACTUAL];
+}
 
 function iniciarJuego() {
     juegoTerminado = false;
@@ -40,7 +38,7 @@ function iniciarJuego() {
     clearInterval(temporizador);
     tiempoInicio = null;
 
-    const config = NIVELES[NIVEL_ACTUAL];
+    const config = elegirDificultadAleatoria();
     dificultadDisplay.textContent = `Dificultad: ${config.nombre}`;
     currentRows = config.rows;
     currentCols = config.cols;
@@ -50,6 +48,7 @@ function iniciarJuego() {
     tiempoDisplay.textContent = tiempoRestante;
     minasRestantesDisplay.textContent = currentMinas;
 
+    // Tamaño de celda responsivo
     const maxDim = Math.max(currentRows, currentCols);
     const cellSize = Math.max(28, Math.min(50, Math.floor((window.innerWidth - 100) / maxDim)));
     tablero.style.setProperty('--cell-size', `${cellSize}px`);
@@ -122,18 +121,18 @@ function manejarClickIzquierdo(e) {
     if (casilla.dataset.mine === 'true') {
         revelarTodasMinas();
         casilla.classList.add('mina-explotada');
+        clearInterval(temporizador);
         mostrarMensaje('¡Boom! Has perdido 💥', true);
         emojiCara.textContent = '💀';
         juegoTerminado = true;
-        clearInterval(temporizador);
     } else {
         revelarCasilla(row, col);
         if (casillasReveladas === currentRows * currentCols - currentMinas) {
+            clearInterval(temporizador);
             revelarTodasMinas();
             mostrarMensaje('¡Ganaste! 🎉', false);
             emojiCara.textContent = '😎';
             juegoTerminado = true;
-            clearInterval(temporizador);
         }
     }
 }
@@ -203,13 +202,20 @@ function revelarTodasMinas() {
 }
 
 function mostrarMensaje(texto, esPerdido) {
-    mensaje.textContent = texto + ' (Clic en título o nivel para reiniciar)';
+    mensaje.textContent = texto + ' (Clic en el título para nueva partida)';
     mensaje.style.color = esPerdido ? '#ff4444' : '#44ff44';
 }
 
 function reiniciarJuego() {
-    iniciarJuego();
+    iniciarJuego(); // Cada vez elige dificultad aleatoria
 }
 
-// Iniciar el juego al cargar
+// Reiniciar al hacer clic fuera del tablero cuando el juego terminó
+tablero.addEventListener('click', (e) => {
+    if (juegoTerminado && !e.target.classList.contains('casilla')) {
+        reiniciarJuego();
+    }
+});
+
+// Iniciar el juego
 iniciarJuego();
