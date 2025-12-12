@@ -78,9 +78,15 @@ window.showLobby = function () {
   canvas.style.display = "none";
 };
 
-// Botón del lobby → ESTOY LISTO
+// Botón del lobby → Listo
 window.setReady = function () {
   socket.emit("player_ready");
+};
+
+// Botón del lobby → Dejar sala
+window.setexit = function () {
+  socket.emit("player_ready");
+  loadInterface("menu");
 };
 
 // Mostrar jugadores del lobby

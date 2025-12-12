@@ -1,13 +1,104 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>PummelPartyt</title>
-  </head>
-  <body>
-    <canvas id="game" width="800" height="600"></canvas>
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pummel Party</title>
 
-    <script src="principal.js"></script>
-  </body>
+  <!-- CSS GLOBAL (fondo negro, transición suave y loader) -->
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Contenedor principal de las interfaces (menú, lobby, etc.) */
+    #appContainer {
+      position: fixed;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none; /* evita clics mientras carga */
+    }
+    #appContainer.ready {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Canvas del juego (solo visible cuando juguemos) */
+    #game {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 3px solid #00eaff;
+      box-shadow: 0 0 30px #00eaff;
+      display: none; /* lo mostramos solo cuando empieza la partida */
+    }
+
+    /* Pantalla de carga bonita */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #00eaff;
+      font-size: 40px;
+      text-shadow: 0 0 20px #00eaff;
+      z-index: 9999;
+    }
+    .spinner {
+      width: 80px;
+      height: 80px;
+      border: 6px solid #333;
+      border-top: 6px solid #00eaff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 30px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Loader bonito mientras carga la primera pantalla -->
+  <div class="loading-screen" id="globalLoader">
+    <div class="spinner"></div>
+    <div>Cargando Pummel Party...</div>
+  </div>
+
+  <!-- Aquí se inyectan menú, lobby, etc. -->
+  <div id="appContainer"></div>
+
+  <!-- Canvas del juego (solo se ve cuando empieza la partida) -->
+  <canvas id="game" width="1200" height="700"></canvas>
+
+  <!-- Scripts -->
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="principal.js"></script>
+
+  <script>
+    // Cuando el DOM esté listo, cargamos el menú y quitamos el loader
+    document.addEventListener("DOMContentLoaded", () => {
+      // Primera carga
+      loadInterface("menu");
+
+      // Quitamos el loader global cuando la primera interfaz esté lista
+      setTimeout(() => {
+        const loader = document.getElementById("globalLoader");
+        if (loader) loader.style.display = "none";
+      }, 600);
+    });
+  </script>
+
+</body>
 </html>
