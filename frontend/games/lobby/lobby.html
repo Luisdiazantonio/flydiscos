@@ -5,12 +5,39 @@
   <meta charset="UTF-8">
   <title>Lobby</title>
 </head>
+
 <body>
-    <div id="menu-container">
-        <h1>Lobby</h1>
-        <div id="players_box"></div>
-        <button onclick="setReady()" class="btn play">Estoy listo</button>
-        <button onclick="setexit()" class="btn exit">Dejar sala</button>
-    </div>
+  <div id="menu-container">
+    <h1>Lobby</h1>
+    <div id="players_box"></div>
+    <button onclick="setReady()" class="btn play">Estoy listo</button>
+    <button onclick="setexit()" class="btn exit">Dejar sala</button>
+  </div>
+
+  <script>
+    // Esta es la única parte que necesitas añadir o modificar
+    socket.on("lobby_update", (players) => {
+      const box = document.getElementById("players_box");
+      box.innerHTML = ""; // limpia la lista
+
+      Object.values(players).forEach(player => {
+        const div = document.createElement("div");
+        div.textContent = player.name;                
+        div.style.cssText = `
+      padding: 15px;
+      margin: 8px 0;
+      background: ${player.ready ? '#00eaff' : '#333'};
+      color: ${player.ready ? 'black' : 'white'};
+      border-radius: 10px;
+      font-size: 24px;
+      font-weight: bold;
+    `;
+        if (player.ready) div.textContent += " - LISTO";
+        box.appendChild(div);
+      });
+    });
+  </script>
+
 </body>
+
 </html>

@@ -48,7 +48,7 @@ async function loadInterface(name) {
 
     //obtener css y js
     const cssText = cssRes && cssRes.ok ? await cssRes.text() : "";
-    const jsText  = jsRes && jsRes.ok  ? await jsRes.text()  : "";
+    const jsText = jsRes && jsRes.ok ? await jsRes.text() : "";
 
     // mostrar todos
     appContainer.innerHTML = html;
@@ -57,7 +57,7 @@ async function loadInterface(name) {
       const style = document.createElement('style');
       style.dataset.interface = name;
       style.textContent = cssText;
-      document.head.appendChild(style); 
+      document.head.appendChild(style);
     }
 
     if (jsText) {
@@ -107,17 +107,13 @@ socket.on("lobby_update", (players) => {
   const box = document.getElementById("players_box");
   if (!box) return;
 
-  box.innerHTML = "";
-
-  Object.values(players).forEach(p => {
-    box.innerHTML += `
-      <p>Jugador ${p.id.slice(0, 5)} - ${p.ready ? "Listo" : ""}</p>
-    `;
-  });
+  box.innerHTML = Object.values(players)
+    .map(p => `<p>${p.name} - ${p.ready ? "Listo" : "Esperando..."}</p>`)
+    .join("");
 });
 
 // Iniciar juego cuando backend avise
 socket.on("start_game", () => {
-  loadInterface("game");
+  loadInterface("juegobase");
   canvas.style.display = "block";
 });

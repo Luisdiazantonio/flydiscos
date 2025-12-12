@@ -14,7 +14,7 @@ const app = express();
 app.use(cors());
 
 
-app.use(express.static(__dirname));  
+app.use(express.static(__dirname));
 
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
@@ -34,9 +34,12 @@ let game = {
 io.on("connection", (socket) => {
   console.log("Cliente conectado:", socket.id);
 
-  // Registrar jugador
+  const playerNumber = Object.keys(game.players).length + 1;
+  const playerName = playerNumber <= 3 ? `Player ${playerNumber}` : `Player ${playerNumber}`;
+
   game.players[socket.id] = {
     id: socket.id,
+    name: playerName,        
     connected: true,
     ready: false,
   };
@@ -56,7 +59,7 @@ io.on("connection", (socket) => {
     // limite de jugadores
     if (game.readyCount >= game.maxPlayers) {
       game.state = "playing";
-      io.emit("start_game"); 
+      io.emit("start_game");
       console.log("Juego iniciado");
     }
   });
