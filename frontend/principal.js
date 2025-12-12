@@ -26,11 +26,43 @@ document.body.appendChild(appContainer);
 //cargar archivos dinamicos
 async function loadInterface(name) {
   try {
-    const res = await fetch(`./games/${name}/${name}.html`);
-    const html = await res.text();
+    // limpiar datos
+    document.querySelectorAll('[data-interface]').forEach(el => el.remove());
+
+    // cargar html
+    const htmlRes = await fetch(`./games/${name}/${name}.html`);
+    if (!htmlRes.ok) throw new Error(`HTML no encontrado: ${name}`);
+    const html = await htmlRes.text();
     appContainer.innerHTML = html;
+
+    // cargar css
+    try {
+      const cssRes = await fetch(`./games/${name}/${name}.css`);
+      if (cssRes.ok) {
+        const style = document.createElement('style');
+        style.dataset.interface = name;         
+        style.textContent = await cssRes.text();
+        document.head.appendChild(style);
+      }
+    } catch (_) {}
+
+    // cargar javaScrip
+    try {
+      const jsRes = await fetch(`./games/${name}/${name}.js`);
+      if (jsRes.ok) {
+        const scriptText = await jsRes.text();
+
+        const script = document.createElement('script');
+        script.dataset.interface = name;          
+        script.textContent = scriptText;
+        document.body.appendChild(script);
+
+      }
+    } catch (_) {}
+
   } catch (err) {
     console.error("Error cargando interfaz:", name, err);
+    appContainer.innerHTML = `<h2 style="color:red;text-align:center;">Error cargando ${name}</h2>`;
   }
 }
 
