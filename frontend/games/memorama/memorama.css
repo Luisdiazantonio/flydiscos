@@ -2,52 +2,57 @@ body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #667eea, #764ba2);
     margin: 0;
-    padding: 20px;
+    padding: 20px 10px;
     color: white;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 .container {
-    max-width: 700px;
+    max-width: 1100px;
     margin: 0 auto;
     text-align: center;
 }
 
 h1 {
-    font-size: 3em;
-    margin-bottom: 10px;
+    font-size: 2.8em;
+    margin: 10px 0;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 #nombre-jugador {
     font-size: 1.5em;
-    margin-bottom: 20px;
+    margin: 15px 0 25px 0;
     font-weight: bold;
 }
 
+/* TABLERO: centrado, responsive y permite scroll */
 #juego {
     opacity: 0;
-    transition: opacity 1s;
-    margin: 30px auto;
-    width: 1000px;        
-    height: 600px;        
+    transition: opacity 1s ease;
+    width: 90vw;
+    max-width: 1000px;
     background: rgba(0,0,0,0.3);
     border-radius: 15px;
-    padding: 10px;
+    padding: 15px;
+    box-sizing: border-box;
+    margin: 20px auto 40px auto;   /* espacio debajo para los botones */
+    /* Quitamos aspect-ratio y height fija para que no bloquee el scroll */
 }
 
 #tablero {
     width: 100%;
-    height: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* hace que todas las celdas tengan el mismo tamaño */
 }
 
 .carta {
-    width: 12.5%;         
-    height: 25%;          
+    width: 12.5%;
+    height: 120px; /* altura fija para que el tablero no se deforme */
     background-color: #2c3e50;
-    border: 3px solid #34495e;   
+    border: 3px solid #34495e;
     border-radius: 10px;
-    font-size: 32px;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
     font-weight: bold;
     color: white;
     text-align: center;
@@ -58,46 +63,37 @@ h1 {
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
 }
 
-.carta:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.6);
-}
-
-.carta.volteada {
-    background-color: #3498db;
-    transform: rotateY(180deg);
-}
-
-.carta.acertada {
-    background-color: #2ecc71 !important;
-    color: #fff;
-}
+.carta:hover { transform: scale(1.05); box-shadow: 0 8px 16px rgba(0,0,0,0.6); }
+.carta.volteada { background-color: #3498db; transform: rotateY(180deg); }
+.carta.acertada { background-color: #2ecc71 !important; color: #fff; cursor: default; }
 
 .centrar {
-    margin: 30px 0;
+    margin: 20px 0 50px 0;
 }
 
 button {
-    padding: 12px 30px;
-    margin: 0 10px;
-    font-size: 18px;
+    padding: 14px 34px;
+    margin: 0 15px;
+    font-size: 19px;
     background: #e74c3c;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
     transition: 0.3s;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+    font-weight: bold;
 }
 
 button:hover {
     background: #c0392b;
-    transform: translateY(-3px);
+    transform: translateY(-4px);
 }
 
 #mensaje {
-    margin-top: 30px;
-    font-size: 2.5em;
+    margin: 30px 0 60px 0;
+    font-size: 2.4em;
     font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-    min-height: 60px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+    min-height: 100px;
 }

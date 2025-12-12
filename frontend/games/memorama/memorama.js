@@ -1,48 +1,43 @@
 let cartas = [
-    "Anjelita", "Anjelita",
-    "Rodrigo", "Rodrigo",
-    "Clara Ines", "Clara Ines",
-    "Eugenia", "Eugenia",
-    "Maria Victoria", "Maria Victoria",
-    "Antonio", "Antonio",
-    "Carlos Eduardo", "Carlos Eduardo",
-    "Carmen Elena", "Carmen Elena",
-    "Juan Pablo", "Juan Pablo",           
-    "Laura", "Laura",
-    "Sofía", "Sofía",
-    "Mateo", "Mateo",
-    "Valentina", "Valentina",
-    "Diego", "Diego",
-    "Camila", "Camila",
-    "Gabriel", "Gabriel"
+    "😀​", "😀​",
+    "🤣​", "🤣​",
+    "👍​", "👍​",
+    "🇲🇽", "🇲🇽",
+    "⚽", "⚽",
+    "🐈‍⬛​", "🐈‍⬛​",
+    "🤝​", "🤝​",
+    "❤️‍🩹​", "❤️‍🩹​",
+    "🍎​", "🍎​",
+    "✅​", "✅​",
+    "​🏁​", "​🏁​",
+    "🏆​", "🏆​",
+    "👀​", "👀​",
+    "❌​", "❌​",
+    "💯​", "💯​",
+    "​☀️​", "​☀️​"
 ];
-
 let jugada1 = null;
 let jugada2 = null;
 let id1 = null;
 let id2 = null;
 let bloqueado = false;
 let nombreJugador = "";
-
 function iniciarJuego() {
     nombreJugador = prompt("¡Bienvenido al Memorama Familiar!\n\n¿Cuál es tu nombre?", "Jugador");
     if (!nombreJugador) nombreJugador = "Jugador";
-    
+   
     document.getElementById("nombre-jugador").innerHTML = `¡Hola, <strong>${nombreJugador}</strong>! ¡Encuentra todos los pares!`;
     document.getElementById("juego").style.opacity = 1;
     document.getElementById("mensaje").innerHTML = "";
-
     barajarCartas();
     resetearTablero();
 }
-
 function barajarCartas() {
     for (let i = cartas.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [cartas[i], cartas[j]] = [cartas[j], cartas[i]];
     }
 }
-
 function resetearTablero() {
     for (let i = 0; i < 32; i++) {
         const celda = document.getElementById(i);
@@ -54,15 +49,12 @@ function resetearTablero() {
     jugada1 = jugada2 = id1 = id2 = null;
     bloqueado = false;
 }
-
 function girarCarta(id) {
     if (bloqueado) return;
     const celda = document.getElementById(id);
     if (celda.classList.contains("acertada") || celda.classList.contains("volteada")) return;
-
     celda.classList.add("volteada");
     celda.innerHTML = celda.dataset.valor;
-
     if (!jugada1) {
         jugada1 = celda.dataset.valor;
         id1 = id;
@@ -70,7 +62,6 @@ function girarCarta(id) {
         jugada2 = celda.dataset.valor;
         id2 = id;
         bloqueado = true;
-
         setTimeout(() => {
             if (jugada1 === jugada2) {
                 document.getElementById(id1).classList.add("acertada");
@@ -87,17 +78,15 @@ function girarCarta(id) {
         }, 800);
     }
 }
-
 function comprobarVictoria() {
     setTimeout(() => {
         const acertadas = document.querySelectorAll(".acertada").length;
         if (acertadas === 32) {
-            document.getElementById("mensaje").innerHTML = 
+            document.getElementById("mensaje").innerHTML =
                 `¡FELICIDADES ${nombreJugador.toUpperCase()}!<br>¡GANASTE EL MEMORAMA!`;
         }
     }, 300);
 }
-
 function resetearJuego() {
     barajarCartas();
     resetearTablero();
