@@ -26,7 +26,7 @@ let game = {
   message: "Conexión establecida",
   players: {},     // jugadores conectados
   readyCount: 0,   // cuántos marcaron listo
-  maxPlayers: 3,   // máximo por partida
+  maxPlayers: 2,   // máximo por partida
   state: "lobby"   // lobby | playing
 };
 
@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
   console.log("Cliente conectado:", socket.id);
 
   const playerNumber = Object.keys(game.players).length + 1;
-  const playerName = playerNumber <= 3 ? `Player ${playerNumber}` : `Player ${playerNumber}`;
+  const playerName = playerNumber <= 2 ? `Player ${playerNumber}` : `Player ${playerNumber}`;
 
   game.players[socket.id] = {
     id: socket.id,

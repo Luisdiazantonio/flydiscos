@@ -48,7 +48,7 @@ async function loadInterface(name) {
 
     //obtener css y js
     const cssText = cssRes && cssRes.ok ? await cssRes.text() : "";
-    const jsText = jsRes && jsRes.ok ? await jsRes.text() : "";
+    const jsText  = jsRes && jsRes.ok  ? await jsRes.text()  : "";
 
     // mostrar todos
     appContainer.innerHTML = html;
@@ -107,13 +107,18 @@ socket.on("lobby_update", (players) => {
   const box = document.getElementById("players_box");
   if (!box) return;
 
-  box.innerHTML = Object.values(players)
-    .map(p => `<p>${p.name} - ${p.ready ? "Listo" : "Esperando..."}</p>`)
-    .join("");
+  box.innerHTML = "";
+
+  Object.values(players).forEach(p => {
+    box.innerHTML += `
+      <p>${p.name} - ${p.ready ? "Listo" : "esperando"}</p>
+    `;
+  });
 });
+
 
 // Iniciar juego cuando backend avise
 socket.on("start_game", () => {
   loadInterface("juegobase");
-  canvas.style.display = "block";
+  canvas.style.display = "none";
 });

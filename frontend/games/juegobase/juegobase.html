@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Pummel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camino de 40 Casillas</title>
 </head>
 <body>
-    <h1>Hola checo puto</h1>
+
+    <div class="container">
+
+        <h1>Camino de 40 Casillas</h1>
+
+        <div id="turno">Turno: Jugador 1</div>
+
+        <div class="tablero">
+            <!-- Se llena desde JS -->
+            <div id="camino"></div>
+        </div>
+
+        <button onclick="tirarDado()">Tirar Dado</button>
+
+        <div id="resultado">Resultado: -</div>
+
+    </div>
+
 </body>
 </html>

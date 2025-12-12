@@ -1,0 +1,66 @@
+body {
+    font-family: Arial;
+    background: #111;
+    color: white;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+h1 {
+    font-size: 2.2em;
+}
+
+#camino {
+    display: grid;
+    grid-template-columns: repeat(10, 50px);
+    gap: 5px;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.casilla {
+    width: 50px;
+    height: 50px;
+    background: #444;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #ddd;
+}
+
+.jugador1 {
+    background: #e91e63;
+    color: white;
+}
+
+.jugador2 {
+    background: #03a9f4;
+    color: white;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 18px;
+    background: #0af;
+    color: black;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #09c;
+}
+
+#resultado {
+    margin-top: 20px;
+    font-size: 1.4em;
+}
